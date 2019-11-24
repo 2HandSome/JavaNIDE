@@ -1,1 +1,100 @@
 
+package com.company;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+
+public class StackBl {
+    public static ArrayList<Integer>[] lists;
+    public static int a, b;
+    public static Integer n;
+    public static void main(String[] args) throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        n = Integer.parseInt(reader.readLine());
+        lists = new ArrayList[n];
+
+        for(int i = 0; i < n; i++){
+            lists[i] = new ArrayList<>();
+            lists[i].add(i);
+        }
+
+        String words = "";
+
+        /*
+
+        System.out.println("Find Pos: " + findPosition(8));*/
+
+        while(!(words = reader.readLine()).equals("quit")) {
+            String[]Splited = words.split("\\s+");
+
+            a = Integer.valueOf(Splited[1]);
+            b = Integer.valueOf(Splited[3]);
+
+            if (findPosition(a) != findPosition(b)){
+
+                if (Splited[0].trim().equals("move")) {
+                    if (Splited[2].trim().equals("onto"))
+                        moveOnto(a,b);
+                    if (Splited[2].trim().equals("over"))
+                        moveOver(a,b);
+                }
+
+                if (Splited[0].trim().equals("pile")) {
+                    if (Splited[2].trim().equals("onto"))
+                        pileOnto(a,b);
+                    if (Splited[2].trim().equals("over"))
+                        pileOver(a,b);
+                }
+
+            }else{
+                continue;
+            }
+
+        }
+        for(int i = 0; i < lists.length;i++){
+            for(int j = 0; j < lists[i].size(); j++){
+                System.out.print(lists[i].get(j) + " ");
+            }
+            System.out.println("");
+        }
+    }
+
+    private static void pileOver(int a, int b) {
+        removePos(a);
+        ArrayList<Integer> list = new ArrayList<>();
+        list.add(a);
+        for(int i = 0; i < list.size(); i++){
+            lists[b].add(list.get(a));
+        }
+    }
+
+    private static void pileOnto(int a, int b) {
+        pileOver(a,b);
+    }
+
+    private static void moveOnto(int a, int b) {
+        moveOver(a, b);
+    }
+
+    private static void moveOver(int a, int b) {
+        removePos(a);
+        lists[b].add(a);
+    }
+
+    private static void removePos(int a) {
+        for(int i = 0; i < lists[a].size(); i++){
+            lists[a].remove(i);
+        }
+    }
+
+    private static int findPosition(int a) {
+            for(int i = 0; i < lists.length; i++){
+                if(lists[i].contains(a)){
+                    return i;
+                }
+            }
+        return -1;
+    }
+}
