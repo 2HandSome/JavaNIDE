@@ -1,0 +1,94 @@
+package com.company;
+
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+
+
+public class Main {
+    private static ArrayList<ArrayList<Integer>> lists;
+    private static ArrayList<Integer> xOy;
+    private static ArrayList<ArrayList<Integer>> temp;
+    final  static int COORDCOUNT = 3;
+
+    public static void main(String[] args)throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        System.out.printf("Enter buldings count\n");
+        int n = Integer.parseInt(reader.readLine().replaceAll("\\s+",""));
+
+
+        lists = new ArrayList<>();
+        temp = new ArrayList<>(n);
+
+        System.out.println("Enter coordinates");
+        for(int i = 0; i < n; i++){
+            xOy = new ArrayList<>(COORDCOUNT);
+
+            for(int j = 0; j < COORDCOUNT; j++){
+                xOy.add(Integer.parseInt(reader.readLine().replaceAll("\\s+","")));
+            }
+            xOy.add(xOy.get(1));
+            temp.add(xOy);
+        }
+
+        for(int i = 0; i < temp.size(); i++){
+            xOy = new ArrayList<>();
+            xOy.add(temp.get(i).get(0));
+            xOy.add(temp.get(i).get(1));
+            xOy.add(1);
+            lists.add(xOy);
+
+        }
+
+        for(int i = 0; i < temp.size(); i++){
+            xOy = new ArrayList<>();
+            xOy.add(temp.get(i).get(2));
+            xOy.add(temp.get(i).get(3));
+            xOy.add(0);
+            lists.add(xOy);
+
+        }
+
+        listsSort(lists);
+
+        for (int i = 0; i < temp.size(); i++) {
+            for (int j = 0; j < temp.get(i).size(); j++) {
+                System.out.print(temp.get(i).get(j) + " ");
+            }
+            System.out.println();
+        }
+
+
+    }
+
+    public static ArrayList<ArrayList<Integer>> listsSort(ArrayList<ArrayList<Integer>> arr){
+        temp.clear();
+        ArrayList<Integer> temporar = new ArrayList<>();
+        for(int i = 0; i < arr.size(); i++){
+            temporar.add(arr.get(i).get(0));
+        }
+        int tempr;
+        for (int i = 0; i < temporar.size() - 1; i++) {
+            for (int j = 1; j < (temporar.size() - i); j++) {
+                if (temporar.get(j - 1) > temporar.get(j)) {
+                    tempr = temporar.get(j - 1);
+                    temporar.set(j - 1, temporar.get(j));
+                    temporar.set(j, tempr);
+                }
+
+            }
+        }
+        for(int i = 0; i < temporar.size(); i++){
+            for(int j = 0;  j < temporar.size(); j++) {
+                if (arr.get(j).get(0).equals(temporar.get(i))) {
+                    temp.add(arr.get(j));
+                }
+            }
+        }
+
+        return temp;
+    }
+
+}
